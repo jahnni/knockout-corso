@@ -5,12 +5,8 @@
     <title>Knockout</title>
 </head>
 <body>
-    <script src="js/knockout-3.5.0.debug.js"></script>
-    <script>
-        function AppViewModel() {
-            
-        }
-        ko.applyBindings(new AppViewModel());
-    </script>
+    <p>Nome <input type="text" data-bind="value:nome"></p>
+    <p>Hai scritto <span data-bind="text:nameCaps"></span></p>
+    <script src="js/require.js" type="text/javascript" data-main="js/init.js"></script>
 </body>
 </html>
