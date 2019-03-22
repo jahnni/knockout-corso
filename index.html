@@ -9,12 +9,18 @@
     <div>
         Total number of clicks <span data-bind="text: totale"></span>
     </div>
-    <script src="js/knockout-3.5.0.js"></script>
+    <div data-bind="visible: tooManyClicks">
+        <button data-bind="click: resetClick">Reset</button>
+    </div>
+    <script src="js/knockout-3.5.0.debug.js"></script>
     <script>
         function AppViewModel() {
             this.totale = ko.observable(0);
             this.registerClick = function () {
                 this.totale(this.totale()+1);
+            }
+            this.resetClick = function () {
+                this.totale(0);
             }
             this.tooManyClicks = ko.pureComputed(function () {
                 return this.totale() > 5;
