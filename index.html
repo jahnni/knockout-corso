@@ -5,30 +5,32 @@
     <title>Knockout</title>
 </head>
 <body>
-    <p>First String: <input type="text" data-bind="value: firstString"></p>
-    <p>Second String: <input type="text" data-bind="value: secondString"></p>
 
-    <p>First String: <strong data-bind="text: firstString"></strong></p>
-    <p>Second String: <strong data-bind="text: secondString"></strong></p>
-
-    <p>Calculated String: <strong data-bind="text: thirdString"></strong></p>
-    <p>Calculated String: <input data-bind="textInput: thirdString"></p>
+    <ul data-bind="foreach: products">
+        <li data-bind="text: $data"></li>
+    </ul>
+    <div>
+        <input type="checkbox" data-bind="checked: selectAllProducts">
+    </div>
+    <div data-bind="foreach: products">
+        <label>
+            <input type="checkbox" data-bind="checkedValue: $data, checked: $parent.choosenProducts">
+            <span data-bind="text: $data"></span>
+        </label>
+    </div>
 
     <script src="js/knockout-3.5.0.debug.js"></script>
     <script>
         function AppViewModel() {
-            this.firstString = ko.observable("Pippo");
-            this.secondString = ko.observable("Pluto");
-            this.thirdString = ko.pureComputed({
+            this.products = ['Apples','Bananas','Oranges','Kiwis','Lemons','Tangerines'];
+            this.choosenProducts = ko.observableArray(['Apples','Lemons']);
+
+            this.selectAllProducts = ko.pureComputed({
                 read: function () {
-                    return this.firstString()+'  '+this.secondString();
+                    return this.choosenProducts().length===this.products;
                 },
                 write: function (value) {
-                    var lastSpacePos = value.lastIndexOf('  ');
-                    if(lastSpacePos > 0){
-                        this.firstString(value.substring(0,lastSpacePos));
-                        this.secondString(value.substring(lastSpacePos+1));
-                    }
+                    this.choosenProducts(value?this.products.slice(0):[])
                 },
                 owner: this
             });
