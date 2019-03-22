@@ -5,16 +5,10 @@
     <title>Knockout</title>
 </head>
 <body>
-    <p>Full name <span data-bind="text: fullName"></span></p>
     <script src="js/knockout-3.5.0.debug.js"></script>
     <script>
         function AppViewModel() {
-            var self = this;
-            self.firstName = ko.observable("Gigi");
-            self.secondName = ko.observable("Rossi");
-            self.fullName = ko.computed(function () {
-                return self.firstName()+self.secondName();
-            });
+            
         }
         ko.applyBindings(new AppViewModel());
     </script>
