@@ -14,9 +14,11 @@
     <ul data-bind="foreach:{data:people, as:'persona',afterAdd:animation}">
         <li>
             <span data-bind="text: persona.name"></span>
-            <ul data-bind="foreach:{data:items, as: 'item'}">
-                <li data-bind="text:item"></li>
-            </ul>
+            <div data-bind="if: persona.items">
+                <ul data-bind="foreach:{data:items, as: 'item'}">
+                    <li data-bind="text:item"></li>
+                </ul>
+            </div>
         </li>
     </ul>
     <button data-bind="click: addPerson">Add</button>
