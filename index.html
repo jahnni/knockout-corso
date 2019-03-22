@@ -11,42 +11,16 @@
 </head>
 <body>
 
-    <ul data-bind="foreach:{data:people, as:'persona',afterAdd:animation}">
-        <li>
-            <span data-bind="text: persona.name"></span>
-            <ul data-bind="foreach:{data:items, as: 'item'}">
-                <li data-bind="text:item"></li>
-            </ul>
-        </li>
-    </ul>
-    <button data-bind="click: addPerson">Add</button>
-
+    <label><input type="checkbox" data-bind="checked: displayMessage">Display message</label>
+    <div data-bind="if: displayMessage">Here's the message</div>
     <script src="js/knockout-3.5.0.debug.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/jquery.color.js"></script>
     <script>
-        function AppViewModel(){
-            var self = this;
-            self.people = ko.observableArray([
-                {name:'Gigi',items:['jquery','vuejs']},
-                {name:'Luca',items:['angular','knockout']},
-                {name:'Mario',items:['knockout','jquery','vuejs']},
-                {name:'Paolo',items:['vuejs','jquery','angular']}
-            ]);
-            self.addPerson = function () {
-                self.people.push({name:'New person',items:[]});
-            }
-            self.removePerson = function () {
-                self.people.remove(this);
-            }
 
-            self.animation = function (element) {
-                $(element).filter('li')
-                    .animate({backgroundColor:'yellow'},2000)
-                    .animate({backgroundColor:'white'},8000)
-            }
-        }
-        ko.applyBindings(new AppViewModel());
+        ko.applyBindings({
+            displayMessage: ko.observable(false)
+        });
     </script>
 </body>
 </html>
