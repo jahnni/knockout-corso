@@ -11,7 +11,7 @@
 </head>
 <body>
     <div>Insert price <input data-bind="value: price"></div>
-    <div data-bind="class: status">Product is <span data-bind="text: priceRating"></span></div>
+    <div data-bind="class: status,style:{color:price()>25?'white':'yellow'}">Product is <span data-bind="text: priceRating"></span></div>
     <script src="js/knockout-3.5.0.debug.js"></script>
     <script>
         var AppViewModel = {
