@@ -11,20 +11,14 @@
 </head>
 <body>
 
-    <table>
-        <thead>
-            <td>Index</td>
-            <td>Name</td>
-            <td>Action</td>
-        </thead>
-        <tbody data-bind="foreach: people">
-            <tr>
-                <td data-bind="text: $index"></td>
-                <td data-bind="text: name"></td>
-                <td><a href="#" data-bind="click: $parent.removePerson">Remove</a></td>
-            </tr>
-        </tbody>
-    </table>
+    <ul data-bind="foreach:{data:people, as:'persona'}">
+        <li>
+            <span data-bind="text: persona.name"></span>
+            <ul data-bind="foreach:{data:items, as: 'item'}">
+                <li data-bind="text:item"></li>
+            </ul>
+        </li>
+    </ul>
     <button data-bind="click: addPerson">Add</button>
 
     <script src="js/knockout-3.5.0.debug.js"></script>
@@ -32,10 +26,10 @@
         function AppViewModel(){
             var self = this;
             self.people = ko.observableArray([
-                {name:'Gigi'},
-                {name:'Luca'},
-                {name:'Mario'},
-                {name:'Paolo'}
+                {name:'Gigi',items:['jquery','vuejs']},
+                {name:'Luca',items:['angular','knockout']},
+                {name:'Mario',items:['knockout','jquery','vuejs']},
+                {name:'Paolo',items:['vuejs','jquery','angular']}
             ]);
             self.addPerson = function () {
                 self.people.push({name:'New person'});
