@@ -5,26 +5,16 @@
     <title>Knockout</title>
 </head>
 <body>
-    <button data-bind="click: registerClick, disable: tooManyClicks">Click me</button>
-    <div>
-        Total number of clicks <span data-bind="text: totale"></span>
-    </div>
-    <div data-bind="visible: tooManyClicks">
-        <button data-bind="click: resetClick">Reset</button>
-    </div>
+    <p>Full name <span data-bind="text: fullName"></span></p>
     <script src="js/knockout-3.5.0.debug.js"></script>
     <script>
         function AppViewModel() {
-            this.totale = ko.observable(0);
-            this.registerClick = function () {
-                this.totale(this.totale()+1);
-            }
-            this.resetClick = function () {
-                this.totale(0);
-            }
-            this.tooManyClicks = ko.pureComputed(function () {
-                return this.totale() > 5;
-            },this)
+            var self = this;
+            self.firstName = ko.observable("Gigi");
+            self.secondName = ko.observable("Rossi");
+            self.fullName = ko.computed(function () {
+                return self.firstName()+self.secondName();
+            });
         }
         ko.applyBindings(new AppViewModel());
     </script>
