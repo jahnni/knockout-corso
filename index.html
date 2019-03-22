@@ -5,12 +5,14 @@
     <title>Knockout</title>
 </head>
 <body>
+    <div data-bind="text: example"></div>
     <script src="js/knockout-3.5.0.debug.js"></script>
     <script>
-        function AppViewModel() {
-            
+        var AppViewModel = {
+            example: ko.observable()
         }
-        ko.applyBindings(new AppViewModel());
+        AppViewModel.example('<p>Testo di prova</p>');
+        ko.applyBindings(AppViewModel);
     </script>
 </body>
 </html>
