@@ -3,14 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Knockout</title>
+    <style>
+        .base{background-color: #eee}
+        .green{background-color: green}
+        .red{background-color: red}
+    </style>
 </head>
 <body>
+    <div>Insert price <input data-bind="value: price"></div>
+    <div data-bind="class: status">Product is <span data-bind="text: priceRating"></span></div>
     <script src="js/knockout-3.5.0.debug.js"></script>
     <script>
-        function AppViewModel() {
-            
+        var AppViewModel = {
+            price: ko.observable(25.99)
         }
-        ko.applyBindings(new AppViewModel());
+        AppViewModel.priceRating = ko.pureComputed(function () {
+            return this.price() > 25 ? 'Expensive':'Cheap';
+        },AppViewModel);
+        AppViewModel.status = ko.pureComputed(function () {
+            return this.price() > 25 ? 'red':'green';
+        },AppViewModel);
+        ko.applyBindings(AppViewModel);
     </script>
 </body>
 </html>
