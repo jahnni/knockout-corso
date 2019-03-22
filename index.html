@@ -3,14 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Knockout</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 </head>
 <body>
+
+    <ul data-bind="foreach:products">
+        <li>
+            <strong data-bind="text:name"></strong>
+            <like-widget params="value:rating"></like-widget>
+        </li>
+    </ul>
     <script src="js/knockout-3.5.0.debug.js"></script>
     <script>
-        function AppViewModel() {
-            
+        ko.components.register('like-widget',{
+            viewModel:function (params) {
+                this.choice = params.value;
+                this.like = function () {
+                    this.choice('like')
+                }.bind(this);
+                this.dislike = function () {
+                    this.choice('dislike')
+                }.bind(this);
+            },
+            template:'<div>' +
+                '<div data-bind="visible: !choice()">' +
+                '<i class="fas fa-thumbs-up" data-bind="click:like">Like</i>' +
+                '<i class="fas fa-thumbs-down" data-bind="click:dislike">Dislike</i>' +
+                '</div>' +
+                '<div data-bind="visible: choice()"></div>' +
+                '<strong data-bind="text: choice"></strong>' +
+                '</div>'
+        });
+        function Product(name,rating){
+            this.name=name;
+            this.rating=ko.observable(rating || null);
         }
-        ko.applyBindings(new AppViewModel());
+        function myViewModel(){
+            this.products = ko.observableArray([
+                new Product('Apple'),
+                new Product('Pear'),
+                new Product('Lemon','like'),
+                new Product('Tangerine','dislike'),
+            ])
+        }
+        ko.applyBindings(new myViewModel());
     </script>
 </body>
 </html>
