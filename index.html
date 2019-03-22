@@ -11,11 +11,16 @@
 </head>
 <body>
     <div>Insert price <input data-bind="value: price"></div>
-    <div data-bind="class: status,style:{color:price()>25?'white':'yellow'}">Product is <span data-bind="text: priceRating"></span></div>
+    <div data-bind="class: status,style:{color:price() > 25?'white':'yellow'}">Product is <span data-bind="text: priceRating"></span></div>
+    <div>
+        <a data-bind="attr: {href:url(), title: titolo}">Linktext</a>
+    </div>
     <script src="js/knockout-3.5.0.debug.js"></script>
     <script>
         var AppViewModel = {
-            price: ko.observable(25.99)
+            price: ko.observable(25.99),
+            url: ko.observable('ko_07.html'),
+            titolo: ko.observable('Link text')
         }
         AppViewModel.priceRating = ko.pureComputed(function () {
             return this.price() > 25 ? 'Expensive':'Cheap';
