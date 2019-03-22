@@ -3,14 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Knockout</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 </head>
 <body>
+<table>
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:lines">
+        <tr>
+            <td>
+                <select data-bind="options: sampleProductCategories, optionsText:'name',optionsCaption:'Choose a category',value:category"></select>
+            </td>
+            <td data-bind="with:category">
+                <select data-bind="options:products,optionsText:'name',optionsCaption:'Choose a product',value:$parent.product"></select>
+            </td>
+            <td data-bind="with:product">
+                <span data-bind="text:price"></span>
+            </td>
+            <td><input data-bind="visible:product,value:quantity,valueUpdate: 'afterkeydown'"></td>
+            <td>
+                <span data-bind="text:subtotal()"></span>
+            </td>
+            <td><a href="#" data-bind="click: $parent.removeLine"><i class="fa fa-trash" aria-hidden="true"></i> Remove</a></td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    Totale : <span data-bind="text : total()"></span>
+</p>
+<button data-bind="click: addLine"><i class="fa fa-cart-plus" aria-hidden="true"></i> Add product</button>
     <script src="js/knockout-3.5.0.debug.js"></script>
+    <script src="js/sampleProductCategories.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-        function AppViewModel() {
-            
+        var CartLine = function () {
+            var self = this;
+            self.category = ko.observable();
+            self.product= ko.observable();
+            self.quantity = ko.observable(1);
+            self.subtotal = ko.pureComputed(function () {
+                return self.product()?self.product().price*parseInt(self.quantity()):0;
+            });
+            self.category.subscribe(function () {
+                self.product(undefined);
+            });
         }
-        ko.applyBindings(new AppViewModel());
+        var Cart = function () {
+            var self = this;
+            self.lines = ko.observableArray([new CartLine()]);
+            self.total = ko.pureComputed(function () {
+                var total = 0;
+                $.each(self.lines(),function () {
+                    total+=this.subtotal();
+                })
+                return total;
+            });
+            self.addLine = function () {
+                self.lines.push(new CartLine());
+            }
+            self.removeLine =function (line) {
+                self.lines.remove(line);
+            }
+        }
+        ko.applyBindings(new Cart());
     </script>
 </body>
 </html>
